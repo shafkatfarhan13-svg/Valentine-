@@ -3,92 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
+    <title>A Special Surprise ❤️</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #ffeef2;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-            text-align: center;
-        }
-
-        .container {
-            z-index: 10;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 80%;
-        }
-
-        h1 { color: #ff4d6d; font-size: 24px; }
-        p { color: #555; line-height: 1.6; }
-
-        .btn {
-            background: #ff4d6d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-
-        /* Heart Animation */
-        .heart {
-            position: absolute;
-            color: #ff4d6d;
-            font-size: 20px;
-            animation: float 5s linear infinite;
-            opacity: 0.7;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
+        body { margin: 0; padding: 0; background: #1a1a1a; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        #main-card { background: #2d2d2d; padding: 40px; border-radius: 20px; box-shadow: 0 0 50px rgba(255, 77, 109, 0.5); text-align: center; max-width: 400px; width: 90%; position: relative; }
+        h1 { color: #ff4d6d; }
+        input { padding: 10px; border-radius: 5px; border: none; margin-top: 10px; text-align: center; }
+        button { background: #ff4d6d; color: white; border: none; padding: 12px 25px; border-radius: 25px; cursor: pointer; margin-top: 15px; font-weight: bold; transition: 0.3s; }
+        button:hover { transform: scale(1.1); background: #ff758f; }
+        #noBtn { position: absolute; transition: 0.2s; }
+        .hidden { display: none; }
+        .heart-particle { position: absolute; color: #ff4d6d; pointer-events: none; animation: fly 3s linear forwards; }
+        @keyframes fly { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="content">
-            <h1>Happy Valentine Day Mowmi! ❤️</h1>
-            <p>Tumi ki jano tumi amar kache koto special? <br> Ei chotto website-ta shudhu tomar jonno banano ami oto kisu pari na but eituk jani je always tumk sm vabe valobeshe jabo and protidin e valentine day hobe,,,always there for you jaaan.</p>
-            <button class="btn" onclick="showLove()">Click Me!</button>
+    <div id="step1" class="container">
+        <div id="main-card">
+            <h1>🔒 Restricted Area</h1>
+            <p>Only for the person I love. <br> Enter the Secret Password:</p>
+            <input type="password" id="passInput" placeholder="Hint: Your Birthday/Name">
+            <br>
+            <button onclick="checkPass()">Unlock Heart</button>
+        </div>
+    </div>
+
+    <div id="step2" class="container hidden">
+        <div id="main-card">
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndW1nZ3RxeW9wbm93eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/vVzH2Li3uM6cx8ce9O/giphy.gif" width="120">
+            <h1>Will you be my Valentine? 🌹</h1>
+            <p id="msg">I promise to make you smile every day!</p>
+            <div style="height: 100px; display: flex; justify-content: center; align-items: center; gap: 20px;">
+                <button id="yesBtn" onclick="finalStep()">YES! 😍</button>
+                <button id="noBtn" onmouseover="dodge()">No 😢</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="step3" class="container hidden">
+        <div id="main-card">
+            <h1>Yayyy! You are MINE! ❤️</h1>
+            <img src="https://media.giphy.com/media/iCVz2SSs1L9RYatKU6/giphy.gif" width="200">
+            <p>Happy Valentine's Day, My Love! ✨ <br> Let's make 2026 our best year.</p>
+            <p style="font-size: 12px; color: #888;">(Check your WhatsApp for a surprise gift! 😉)</p>
         </div>
     </div>
 
     <script>
-        function showLove() {
-            document.getElementById('content').innerHTML = `
-                <h1>I Love You! 🌹</h1>
-                <p>Happy Valentine's Day! <br> Tumi thakle shob kichu shundor lage. <br> Be mine forever wifey?? ✨</p>
-                <div style="font-size: 50px;">🥰</div>
-            `;
-            // Extra explosion of hearts
-            for(let i=0; i<20; i++) { createHeart(); }
+        const pass = "1509"; // Ekhane tor ichhe moto password de
+
+        function checkPass() {
+            const input = document.getElementById('passInput').value;
+            if(input === pass) {
+                document.getElementById('step1').classList.add('hidden');
+                document.getElementById('step2').classList.remove('hidden');
+            } else {
+                alert("Wrong Password! Try again.");
+            }
+        }
+
+        let noCount = 0;
+        const noMessages = ["Are you sure?", "Think again!", "Don't do this to me :(", "Wait, Nooo!", "I'm gonna cry..."];
+
+        function dodge() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            
+            if(noCount < noMessages.length) {
+                document.getElementById('msg').innerText = noMessages[noCount];
+                noCount++;
+            }
+            
+            let currentSize = parseInt(window.getComputedStyle(yesBtn).fontSize);
+            document.getElementById('yesBtn').style.fontSize = (currentSize + 10) + 'px';
+            document.getElementById('yesBtn').style.padding = (currentSize + 5) + 'px';
+        }
+
+        function finalStep() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            setInterval(createHeart, 150);
         }
 
         function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
+            const h = document.createElement('div');
+            h.innerHTML = '❤️';
+            h.className = 'heart-particle';
+            h.style.left = '50vw';
+            h.style.top = '50vh';
+            h.style.setProperty('--x', (Math.random() - 0.5) * 1000 + 'px');
+            h.style.setProperty('--y', (Math.random() - 0.5) * 1000 + 'px');
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 3000);
         }
-
-        setInterval(createHeart, 300);
     </script>
 </body>
 </html>
